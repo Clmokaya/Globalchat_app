@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:globalchat/firebase_options.dart';
+import 'package:globalchat/screens/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +21,11 @@ class _myAppState extends State<myApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-            brightness: Brightness.light,
-            useMaterial3: true,
-            fontFamily: "Poppins"),
-        home: Scaffold(
-          body: Center(child: Text('Firebase working fine!')),
-        ));
+      theme: ThemeData(
+          brightness: Brightness.light,
+          useMaterial3: true,
+          fontFamily: "Poppins"),
+      home: SplashScreen(),
+    );
   }
 }
