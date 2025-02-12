@@ -19,7 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signup'),
+        title: Text(''),
       ),
       body: Form(
         key: userForm,
@@ -27,6 +27,10 @@ class _SignupScreenState extends State<SignupScreen> {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Image.asset("Assets/images/logo.png")),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 controller: email,
@@ -52,16 +56,26 @@ class _SignupScreenState extends State<SignupScreen> {
                 decoration: InputDecoration(label: Text('Password')),
               ),
               SizedBox(height: 23),
-              ElevatedButton(
-                  onPressed: () {
-                    if (userForm.currentState!.validate()) {
-                      SignupController.createAccount(
-                          context: context,
-                          email: email.text,
-                          password: password.text); //create account
-                    }
-                  },
-                  child: Text('Create account'))
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: Size(0, 50),
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.deepPurpleAccent),
+                        onPressed: () {
+                          if (userForm.currentState!.validate()) {
+                            SignupController.createAccount(
+                                context: context,
+                                email: email.text,
+                                password: password.text); //create account
+                          }
+                        },
+                        child: Text('Create account')),
+                  ),
+                ],
+              )
             ],
           ),
         ),
