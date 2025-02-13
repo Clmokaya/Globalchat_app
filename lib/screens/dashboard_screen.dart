@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:globalchat/screens/profile_screen.dart';
 import 'package:globalchat/screens/splash_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -15,24 +16,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
+      appBar: AppBar(title: Text('Global Chat')),
+      drawer: Drawer(
+        child: Container(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              ListTile(
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return ProfileScreen();
+                    }),
+                  );
+                },
+                leading: Icon(Icons.people),
+                title: Text('Profile'),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              ListTile(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context) {
+                    return SplashScreen();
+                  }), (route) {
+                    return false;
+                  });
+                },
+                leading: Icon(Icons.logout),
+                title: Text('Logout'),
+              )
+            ],
+          ),
+        ),
       ),
       body: Column(
         children: [
           Text('Welcome,'),
           Text((user?.email ?? "").toString()),
-          ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) {
-                  return SplashScreen();
-                }), (route) {
-                  return false;
-                });
-              },
-              child: Text('Logout'))
         ],
       ),
     );
