@@ -12,6 +12,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   var userForm = GlobalKey<FormState>();
+  bool isLoading = false;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -98,17 +99,27 @@ class _SignupScreenState extends State<SignupScreen> {
                                     minimumSize: Size(0, 50),
                                     foregroundColor: Colors.white,
                                     backgroundColor: Colors.deepPurpleAccent),
-                                onPressed: () {
+                                onPressed: () async {
                                   if (userForm.currentState!.validate()) {
-                                    SignupController.createAccount(
+                                    isLoading = true;
+                                    setState(() {});
+                                    await SignupController.createAccount(
                                         context: context,
                                         email: email.text,
                                         password: password.text,
                                         country: country.text,
                                         name: name.text); //create account
+                                    isLoading = false;
+                                    setState(() {});
                                   }
                                 },
-                                child: Text('Create account')),
+                                child: isLoading
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CircularProgressIndicator(
+                                            color: Colors.white),
+                                      )
+                                    : Text('Create account')),
                           ),
                         ],
                       )
