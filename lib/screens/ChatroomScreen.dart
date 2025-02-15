@@ -27,12 +27,32 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
     Map<String, dynamic> messageToSend = {
       "text": messageText.text,
       "sender_name": Provider.of<UserProvider>(context, listen: false).userName,
+      'sender_id': Provider.of<UserProvider>(context, listen: false).userId,
       "chatroom_id": widget.chatroomId,
       "timestamp": FieldValue.serverTimestamp()
     };
-
-    await db.collection("messages").add(messageToSend);
     messageText.text = "";
+    await db.collection("messages").add(messageToSend);
+  }
+
+  Widget singleChatItem(
+      {required String sender_name,
+      required String text,
+      required String sender_id}) {
+    return Column(
+      crossAxisAlignment:
+          sender_id == Provider.of<UserProvider>(context, listen: false).userId
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+      children: [
+        Text(
+          sender_name,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Container(color: Colors.blueGrey[900], child: Text(text)),
+        SizedBox(height: 8)
+      ],
+    );
   }
 
   @override
@@ -47,9 +67,16 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
               child: StreamBuilder(
             stream: db
                 .collection("messages")
+                .where('chatroom_id', isEqualTo: widget.chatroomId)
+                .limit(5)
                 .orderBy('timestamp', descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Text('Some error has occured');
+              }
+
               var allMessages = snapshot.data?.docs ?? [];
               return ListView.builder(
                   reverse: true,
@@ -57,17 +84,10 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            allMessages[index]["sender_name"],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(allMessages[index]["text"]),
-                          SizedBox(height: 8)
-                        ],
-                      ),
+                      child: singleChatItem(
+                          sender_name: allMessages[index]['sender_name'],
+                          text: allMessages[index]['text'],
+                          sender_id: allMessages[index]['sender_id']),
                     );
                   });
             },
