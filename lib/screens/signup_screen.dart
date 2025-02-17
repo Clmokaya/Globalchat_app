@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:globalchat/controllers/login_controller.dart';
 import 'package:globalchat/controllers/signup_controller.dart';
 import 'package:globalchat/screens/dashboard_screen.dart';
 
@@ -122,6 +123,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                     : Text('Create account')),
                           ),
                         ],
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      ElevatedButton(
+                        onPressed: () => AuthService().signInWithGoogle(),
+                        child: const Text("Google Sign In"),
                       )
                     ],
                   ),
