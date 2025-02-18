@@ -128,9 +128,15 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 12,
                       ),
                       ElevatedButton(
-                        onPressed: () => AuthService().signInWithGoogle(),
-                        child: const Text("Google Sign In"),
-                      )
+                          onPressed: () =>
+                              AuthService().signInWithGoogle(context),
+                          child: isLoading
+                              ? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircularProgressIndicator(
+                                      color: Colors.white),
+                                )
+                              : Text('Google Sign In')),
                     ],
                   ),
                 ),

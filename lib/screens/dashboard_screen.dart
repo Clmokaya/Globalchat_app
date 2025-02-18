@@ -73,7 +73,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   },
                   leading: CircleAvatar(
-                    child: Text(userProvider.userName[0]),
+                    backgroundColor: Colors.deepPurple[500],
+                    child: Text(userProvider.userName),
                   ),
                   title: Text(
                     userProvider.userName,

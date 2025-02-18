@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(radius: 50, child: Text(userProvider.userName[0])),
+            CircleAvatar(radius: 50, child: Text(userProvider.userName)),
             SizedBox(
               height: 20,
             ),

@@ -31,29 +31,3 @@ class LoginController {
     }
   }
 }
-
-class AuthService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  User? getCurrentUser() {
-    return _firebaseAuth.currentUser;
-  }
-
-// google sign in
-  signInWithGoogle() async {
-//begin interactive sign in process
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-
-//if user cancels google sign in in pop up screen
-    if (gUser == null) return;
-
-//obtain auth details from request
-    final GoogleSignInAuthentication gAuth = await gUser.authentication;
-
-    // create a new credential user
-    final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken, idToken: gAuth.idToken);
-
-//finally sign in
-    return await _firebaseAuth.signInWithCredential(credential);
-  }
-}
