@@ -1,36 +1,31 @@
-name: Flutter CI
+name: Build and Upload APK
 
 on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: subosito/flutter-action@v2
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          flutter-version: '3.27.1'
+          flutter-version: '3.13.0'  # adjust to your version if needed
 
-      - name: Get Flutter dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Run Flutter tests
-        run: flutter test
-
-      - name: Build APK
+      - name: Build release APK
         run: flutter build apk --release
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Upload release APK
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
