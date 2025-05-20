@@ -1,0 +1,29 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Or your desired OS
+
+    steps:
+    - uses: actions/checkout@v4 # Checks out your repository code
+
+    - uses: subosito/flutter-action@v2 # This action sets up Flutter
+      with:
+        channel: 'stable' # Or 'beta', 'dev' depending on your needs
+        # flutter-version: '3.x.x' # Optional: Specify a particular Flutter version
+
+    - name: Get Flutter dependencies
+      run: flutter pub get
+
+    - name: Run Flutter tests (Optional)
+      run: flutter test
+
+    # Add other build/deploy steps as needed
