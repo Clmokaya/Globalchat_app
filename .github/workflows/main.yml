@@ -16,19 +16,22 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'  # adjust to your version if needed
+          flutter-version: '3.13.0'  # adjust if needed
 
       - name: Install dependencies
         run: flutter pub get
 
-- name: Build release APK
-  run: flutter build apk --release
+      - name: Show commit SHA
+        run: echo "This build is for commit ${{ github.sha }}"
 
-- name: List APK directory contents
-  run: ls -la build/app/outputs/flutter-apk/
+      - name: Build release APK
+        run: flutter build apk --release
 
-- name: Upload release APK
-  uses: actions/upload-artifact@v3
-  with:
-    name: release-apk-${{ github.sha }}
-    path: build/app/outputs/flutter-apk/app-release.apk
+      - name: List APK directory contents
+        run: ls -la build/app/outputs/flutter-apk/
+
+      - name: Upload release APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-release.apk
