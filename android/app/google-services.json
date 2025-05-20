@@ -1,14 +1,13 @@
 {
   "project_info": {
-    "project_number": "89056374320",
-    "firebase_url": "https://flutter002-1d47e-default-rtdb.firebaseio.com",
-    "project_id": "flutter002-1d47e",
-    "storage_bucket": "flutter002-1d47e.firebasestorage.app"
+    "project_number": "687265968131",
+    "project_id": "my-global-chat-project",
+    "storage_bucket": "my-global-chat-project.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:89056374320:android:9de759dd2f86a9607447f5",
+        "mobilesdk_app_id": "1:687265968131:android:c747d9f7c689a8295f1e36",
         "android_client_info": {
           "package_name": "com.cmmapps.globalchat"
         }
@@ -16,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB4f-1qeSFumqlMPzK8z-kYhgLwxo1--JU"
+          "current_key": "AIzaSyBdR_HX5p3aF-THMvHhLLC5i9XUpEY0YZw"
         }
       ],
       "services": {
