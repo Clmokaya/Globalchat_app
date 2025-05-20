@@ -33,10 +33,10 @@ jobs:
 
       - name: Upload to Firebase App Distribution
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.TOKEN }}
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app "<YOUR_FIREBASE_APP_ID>" \
+            --app "APPID" \
             --release-notes "Build from commit ${{ github.sha }}" \
             --groups "testers"
         uses: actions/upload-artifact@v3
