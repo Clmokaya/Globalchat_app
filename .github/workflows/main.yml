@@ -35,7 +35,9 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.TOKEN }}
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app "APPID" \
+            --app "
+1:89056374320:android:9de759dd2f86a9607447f5
+" \
             --release-notes "Build from commit ${{ github.sha }}" \
             --testers "email1@example.com,email2@example.com"
 
