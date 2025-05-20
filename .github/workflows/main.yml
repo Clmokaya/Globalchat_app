@@ -16,31 +16,34 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
-          
+          flutter-version: '3.29.3'  # Includes Dart 3.6.0
+
+      - name: Check Flutter and Dart version
+        run: |
+          flutter --version
+          dart --version
+
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: List APK directory
-        run: ls -la build/app/outputs/flutter-apk/
+      - name: Confirm APK exists
+        run: ls -lh build/app/outputs/flutter-apk/app-release.apk
 
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
-      - name: Distribute via Firebase App Distribution
-        env:
-          FIREBASE_TOKEN: ${{ secrets.TOKEN }}
+      - name: Write Firebase service account key
+        run: echo '${{ secrets.CREDENTIALS }}' > $HOME/firebase_key.json
+
+      - name: Set GOOGLE_APPLICATION_CREDENTIALS env var
+        run: echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/firebase_key.json" >> $GITHUB_ENV
+
+      - name: Distribute APK via Firebase App Distribution
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-            --app "secrets. APPID" \
+            --app "${{ secrets.APPID }}" \
             --release-notes "Build from commit ${{ github.sha }}" \
-            --testers "email1@example.com,email2@example.com"
-
-      - name: Upload APK to GitHub Actions Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk-${{ github.sha }}
-          path: build/app/outputs/flutter-apk/app-release.apk
+            --testers "${{ secrets.TESTER_EMAILS }}"
