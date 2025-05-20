@@ -1,4 +1,4 @@
-name: Build and Upload APK
+name: Build and Distribute APK to Firebase
 
 on:
   push:
@@ -16,21 +16,29 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'  # adjust if needed
+          flutter-version: '3.13.0'
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Show commit SHA
-        run: echo "This build is for commit ${{ github.sha }}"
-
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: List APK directory contents
+      - name: List APK directory
         run: ls -la build/app/outputs/flutter-apk/
 
-      - name: Upload release APK
+      - name: Install Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+
+      - name: Upload to Firebase App Distribution
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+            --app "<YOUR_FIREBASE_APP_ID>" \
+            --release-notes "Build from commit ${{ github.sha }}" \
+            --groups "testers"
         uses: actions/upload-artifact@v3
         with:
           name: release-apk-${{ github.sha }}
