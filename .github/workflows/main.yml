@@ -28,17 +28,18 @@ jobs:
         run: ls -la build/app/outputs/flutter-apk/
 
       - name: Install Firebase CLI
-        run: |
-          curl -sL https://firebase.tools | bash
+        run: curl -sL https://firebase.tools | bash
 
-      - name: Upload to Firebase App Distribution
+      - name: Distribute via Firebase App Distribution
         env:
           FIREBASE_TOKEN: ${{ secrets.TOKEN }}
         run: |
           firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
             --app "APPID" \
             --release-notes "Build from commit ${{ github.sha }}" \
-            --groups "testers"
+            --testers "email1@example.com,email2@example.com"
+
+      - name: Upload APK to GitHub Actions Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: release-apk-${{ github.sha }}
